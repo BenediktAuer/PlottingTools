@@ -2,7 +2,7 @@
 from typing import Iterable, NewType, TypeVar
 import matplotlib.pyplot as plt
 import numpy as np
-
+from kafe2 import ContoursProfiler, Fit, Plot, XYContainer, fit
 from uncertainties import ufloat, unumpy
 import pandas as pd
 import os
@@ -75,3 +75,64 @@ class Messwerte:
         ax.set_ylabel(y_name)
         ax.legend()
         plt.savefig(f"{title}.pdf")
+    
+    def fit_plot(self,title:  str, model):
+        fig, ax = plt.subplots()
+
+        #fig.set_size_inches(18.5, 10.5)
+        ax.errorbar(unumpy.nominal_values(self.x_werte), unumpy.nominal_values(self.y_werte), yerr=unumpy.std_devs(self.y_werte), xerr=unumpy.std_devs(self.x_werte), marker='', linestyle=' ', capsize=1)
+
+
+        results, pars, perrs = Messwerte.__run_polynomial_fit(unumpy.nominal_values(self.x_werte), unumpy.nominal_values(self.y_werte), unumpy.std_devs(self.y_werte), model)
+        fit_data = ""
+        label1 = ""
+        #making unumpy arrays of pars and perrs:
+        fit_parameter=unumpy.uarray(pars,perrs)
+        if (model.__name__) == "linear_model":
+            fit_data = model(unumpy.nominal_values(self.x_werte), pars[0], pars[1])
+            label1 = f"{fit_parameter[0]:p}x+{fit_parameter[1]:p}"
+        elif model.__name__ == "qudratic_model":
+            fit_data = model(unumpy.nominal_values(self.x_werte), pars[0], pars[1], pars[2])
+            label1 = f"{fit_parameter[0]:p}x^2+{fit_parameter[1]:p}x+{fit_parameter[2]:p}"
+        elif model.__name__ == "cubic_model":
+            fit_data = model(unumpy.nominal_values(self.x_werte), pars[0], pars[1], pars[2], pars[2])
+            label1 = (f"{fit_parameter[0]:p}x^3+{fit_parameter[1]:p}x^2+{fit_parameter[2]:p}x+{fit_parameter[3]}")
+        ax.set_title(title)
+        ax.set_xlabel(self.x_name)
+        ax.set_ylabel(self.y_name)
+        #print(results)
+        ax.plot(unumpy.nominal_values(self.x_werte), fit_data, label=f"{label1}")
+       
+        
+        ax.legend()
+        plt.savefig(f"{title}_fit.pdf")
+        return results, pars, perrs
+        
+    def __run_polynomial_fit(x_data1, y_data1, y_err, model_function, debug=False):
+
+        xy_data = XYContainer(x_data=x_data1, y_data=y_data1)
+        xy_data.add_error(axis="y", err_val=y_err)
+        print(xy_data)
+        my_fit = Fit(data=xy_data, model_function=model_function)
+        results = my_fit.do_fit()
+        if debug == True:
+            plot = Plot([my_fit])  # erzeuge ein Plot-Objekt
+            plot.plot()
+        # put the fit parameters and their uncertainites into arrays (lists) for easier handling
+        pars = list()
+        perrs = list()
+        for p in results['parameter_values']:
+            pars.append(results['parameter_values'][p])
+            perrs.append(results['parameter_errors'][p])
+
+        return results, pars, perrs
+    def linear_model(x, a, b):
+        return a*x+b
+
+
+    def qudratic_model(x, a, b, c):
+        return a*x**2+b*x+c
+
+
+    def cubic_model(x, a, b, c, d):
+        return a*x**3+b*x**2+c*x+d
