@@ -136,4 +136,11 @@ class Messwerte:
 
     def cubic_model(x, a, b, c, d):
         return a*x**3+b*x**2+c*x+d
-#TODO y manipulation function takes an function as an input and overwrits y values
+    def y_manipulate(self,function, y_name):
+        self.y_werte = function(self.y_werte)
+        self.y_name = y_name
+        print("y Values manipulated")
+    def x_manipulate(self, function, x_name):
+        self.x_werte = function(self.x_werte)
+        self.x_name = x_name
+        print("x Values manipulated")
