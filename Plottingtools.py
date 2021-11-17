@@ -58,9 +58,9 @@ class Messwerte:
             plt.savefig(f"{title}.pdf")
         
 
-    def from_csv(datei,x_name,y_name):
+    def from_csv(datei,x_name,y_name,label):
         data = np.genfromtxt(f"{datei}", delimiter=";", skip_header=1)
-        werte = Messwerte(data[:, 0], data[:, 1],data[:, 2],data[:, 3], x_name,y_name)
+        werte = Messwerte(data[:, 0], data[:, 1],data[:, 2],data[:, 3], x_name,y_name,label)
         return werte
         
    
