@@ -63,14 +63,16 @@ class Messwerte:
         werte = Messwerte(data[:, 0], data[:, 1],data[:, 2],data[:, 3], x_name,y_name,label)
         return werte
         
-    def plot(self,title):
+    def plot(self,title, legend = False):
         fig, ax = plt.subplots()
         ax.errorbar( unumpy.nominal_values(self.x_werte) , unumpy.nominal_values(self.y_werte), yerr=unumpy.std_devs(self.y_werte), xerr=unumpy.std_devs(self.x_werte), marker='', linestyle=' ', capsize=2, label=f"{self.label}")
         ax.plot(unumpy.nominal_values(self.x_werte), unumpy.nominal_values(self.y_werte), label=f"{self.label}")
         ax.set_title(title)
         ax.set_xlabel(self.x_name)
         ax.set_ylabel(self.y_name)
-        ax.legend()
+        if legend ==True:
+            ax.legend()
+        
         plt.savefig(f"{title}.pdf")
 
     def plots(werte: Iterable, title: str ,x_name:str, y_name :str)-> None:
