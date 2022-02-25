@@ -24,7 +24,10 @@ testlist = [test]
 Plottingtools.Messwerte.plots(testlist,"UI-Diagramm", "Strom", "Spannung")
 
 
+
 results, pars, perrs =test.fit_plot("UI-Diagramm", Plottingtools.Messwerte.linear_model)
+test.flip()
+test.plot("IU-Diagramm",True)
 print(f" results: \n {results}")
 print(f"pars: \n {pars}")
 print(f"perrs: \n {perrs}")

@@ -154,3 +154,8 @@ class Messwerte:
         self.x_werte = function(self.x_werte)
         self.x_name = x_name
         print("x Values manipulated")
+    
+    def flip(self):
+        self.x_werte, self.y_werte = self.y_werte, self.x_werte
+        self.x_name, self.y_name = self.y_name, self.x_name
+        
