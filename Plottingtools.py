@@ -1,4 +1,6 @@
 
+from re import X
+from statistics import mode
 from typing import Iterable, NewType, TypeVar
 import matplotlib.pyplot as plt
 import numpy as np
@@ -107,6 +109,9 @@ class Messwerte:
         elif model.__name__ == "cubic_model":
             fit_data = model(unumpy.nominal_values(self.x_werte), pars[0], pars[1], pars[2], pars[2])
             label1 = (f"{fit_parameter[0]:p}x^3+{fit_parameter[1]:p}x^2+{fit_parameter[2]:p}x+{fit_parameter[3]}")
+        elif model.__name__ == "cos_square"
+            fit_data = model(unumpy.nominal_values(self.x_werte), pars[0])
+            label1 = f"{fit_parameter[0]}"+r"$cos^2(x)$"
         ax.set_title(title)
         ax.set_xlabel(self.x_name)
         ax.set_ylabel(self.y_name)
@@ -158,8 +163,10 @@ class Messwerte:
     def flip(self):
         self.x_werte, self.y_werte = self.y_werte, self.x_werte
         self.x_name, self.y_name = self.y_name, self.x_name
-        
-     @staticmethod    
+    def cos_square(x,a):
+        return a*np.square(np.cos(x))
+
+    @staticmethod    
     def merge(werte: Iterable, label: str ,x_name:str, y_name :str):
         x_values = np.array([])
         y_values = np.array([])
