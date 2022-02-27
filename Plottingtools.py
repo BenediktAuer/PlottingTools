@@ -109,7 +109,7 @@ class Messwerte:
         elif model.__name__ == "cubic_model":
             fit_data = model(unumpy.nominal_values(self.x_werte), pars[0], pars[1], pars[2], pars[2])
             label1 = (f"{fit_parameter[0]:p}x^3+{fit_parameter[1]:p}x^2+{fit_parameter[2]:p}x+{fit_parameter[3]}")
-        elif model.__name__ == "cos_square"
+        elif model.__name__ == "cos_square":
             fit_data = model(unumpy.nominal_values(self.x_werte), pars[0])
             label1 = f"{fit_parameter[0]}"+r"$cos^2(x)$"
         ax.set_title(title)
