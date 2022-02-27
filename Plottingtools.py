@@ -159,3 +159,12 @@ class Messwerte:
         self.x_werte, self.y_werte = self.y_werte, self.x_werte
         self.x_name, self.y_name = self.y_name, self.x_name
         
+     @staticmethod    
+    def merge(werte: Iterable, label: str ,x_name:str, y_name :str):
+        x_values = np.array([])
+        y_values = np.array([])
+        for werte in werte:
+            x_values = np.append(x_values,werte.x_werte)
+            y_values = np.append(y_values,werte.y_werte)
+        print(x_values)
+        return Messwerte(unumpy.nominal_values(x_values), unumpy.std_devs(x_values), unumpy.nominal_values(y_values), unumpy.std_devs(y_values), x_name,y_name,label)
