@@ -102,16 +102,16 @@ class Messwerte:
         fit_parameter=unumpy.uarray(pars,perrs)
         if (model.__name__) == "linear_model":
             fit_data = model(unumpy.nominal_values(self.x_werte), pars[0], pars[1])
-            label1 = f"{fit_parameter[0]:p}x+{fit_parameter[1]:p}"
+            label1 = f"{fit_parameter[0]:.2eP}x+{fit_parameter[1]:.2eP}"
         elif model.__name__ == "qudratic_model":
             fit_data = model(unumpy.nominal_values(self.x_werte), pars[0], pars[1], pars[2])
-            label1 = f"{fit_parameter[0]:p}x^2+{fit_parameter[1]:p}x+{fit_parameter[2]:p}"
+            label1 = f"{fit_parameter[0]:.2eP}x^2+{fit_parameter[1]:.2eP}x+{fit_parameter[2]:.2eP}"
         elif model.__name__ == "cubic_model":
             fit_data = model(unumpy.nominal_values(self.x_werte), pars[0], pars[1], pars[2], pars[2])
-            label1 = (f"{fit_parameter[0]:p}x^3+{fit_parameter[1]:p}x^2+{fit_parameter[2]:p}x+{fit_parameter[3]}")
+            label1 = (f"{fit_parameter[0]:.2eP}x^3+{fit_parameter[1]:.2eP}x^2+{fit_parameter[2]:.2eP}x+{fit_parameter[3]:.2eP}")
         elif model.__name__ == "cos_square":
             fit_data = model(unumpy.nominal_values(self.x_werte), pars[0])
-            label1 = f"{fit_parameter[0]}"+r"$cos^2(x)$"
+            label1 = f"{fit_parameter[0]:.2eP}"+r"$cos^2(x)$"
         ax.set_title(title)
         ax.set_xlabel(self.x_name)
         ax.set_ylabel(self.y_name)
